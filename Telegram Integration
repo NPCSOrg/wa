@@ -1,3 +1,7 @@
+# You Should view this video
+# You need install Python 
+apt-get install python3-pip
+
 nano /var/ossec/integrations/custom-telegram
 -----------------------------------------------------------------------
 #!/bin/sh
@@ -79,19 +83,25 @@ requests.post(hook_url, headers=headers, data=json.dumps(msg_data))
 sys.exit(0)
 ------------------------------------------------------------------------------------------------------
 
-chown root:ossec /var/ossec/integrations/custom-telegram*
+#chown root:ossec /var/ossec/integrations/custom-telegram* -> 05 Mar 2024 Fail need change to wazuh group
 
+chown root:wazuh /var/ossec/integrations/custom-telegram*
 chmod 750 /var/ossec/integrations/custom-telegram*
 
 --------------------------------------------------------------------------------------------------------
 nano /var/ossec/etc/ossec.conf
 
+--------------------------------------------------------------------------------------------------------
+<!--Telegram Integration-->
+<ossec_config>
 <integration>
         <name>custom-telegram</name>
         <level>3</level>
         <hook_url>https://api.telegram.org/bot*YOUR API KEY*/sendMessage</hook_url>
         <alert_format>json</alert_format>
 </integration>
-    
+</ossec_config>
+<!--End Telegram Integration-->
+
  ----------------------------------------------------------------------------------------------------------
  systemctl restart wazuh-manager
